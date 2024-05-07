@@ -13,7 +13,7 @@ const EmptyChatMessageInput = ({
   setFocusMode: (mode: string) => void;
 }) => {
   const [copilotEnabled, setCopilotEnabled] = useState(false);
-  const [message, setMessage] = useState('Hello, Who are you?');
+  const [message, setMessage] = useState('សួស្ដី! តើអ្នកសុខសប្បាយជាទេ? រួចអ្នកមានឈ្មោះអ្វីដែរ?');
 
   let copi = localStorage.getItem('useCopilot');
   let copilot: boolean = copi === 'true';

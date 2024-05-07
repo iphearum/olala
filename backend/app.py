@@ -131,7 +131,7 @@ def chat_completions():
     return app.response_class(streaming(), mimetype='text/event-stream')
 
 def main(port:int = 5000):
-    socketio.run(app, host='0.0.0.0', port=port, debug=True, use_reloader=True)
+    socketio.run(app, host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
     arg = sys.argv[1:]

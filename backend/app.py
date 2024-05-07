@@ -1,4 +1,4 @@
-import random, string, json, time, uvicorn,asyncio
+import random, string, json, time, os, sys
 from flask import Flask, url_for, render_template, request, abort, redirect, session, Response,jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, send, emit, Namespace
@@ -18,6 +18,7 @@ config = {
 }
 embeded_model = config['embeded_model']
 chatllm_model = config['chatllm_model']
+SECRET_KEY = config['SECRET_KEY']
 
 json_content = 'application/json'
 
@@ -31,21 +32,23 @@ with open('./src/config.json') as file:
 app = Flask(__name__)
 origins = [
     "http://localhost:3000",  # Replace with the origin you want to allow
+    "https://openkh.org",  # Replace with the origin you want to allow
+    "https://chat.openkh.org",  # Replace with the origin you want to allow
 ]
 
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
 app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app, resources={r"/*": {"origins": origins}})
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*",async_mode='threading')
 
 
 ai = AIChat()
-
+ 
 @socketio.on('connection')
 def handle_connect(data):
-    req = request.get_json().get('chatModel')
-    # model = data.get('chatModel', 'openkh:lasted')
+    # req = request.get_json().get('chatModel')
+    # # model = data.get('chatModel', 'openkh:lasted')
     emit('message', json.dumps({"data":"Hello from server"}), broadcast=True)
     print(['Client connected',data,req])
 
@@ -127,6 +130,13 @@ def chat_completions():
 
     return app.response_class(streaming(), mimetype='text/event-stream')
 
+def main(port:int = 5000):
+    socketio.run(app, host='0.0.0.0', port=port, debug=True, use_reloader=True)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, use_reloader=True, debug=True)
+    arg = sys.argv[1:]
+    if(len(arg)==0):
+        main()
+    else:
+        for port in arg:
+            main(int(port))

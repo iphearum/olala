@@ -1,5 +1,5 @@
 import ollama,chromadb,pytesseract,datetime
-from IPython.display import Image, display
+# from IPython.display import Image, display
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
 from langchain.vectorstores.utils import filter_complex_metadata

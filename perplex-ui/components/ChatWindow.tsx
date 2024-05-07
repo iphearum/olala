@@ -172,7 +172,7 @@ const ChatWindow = () => {
 
     const messageHandler = (e: any) => {
       const data = JSON.parse(e);
-      console.log('message', data);
+      // console.log('message', data);
 
       if (data.type === 'error') {
         toast.error(data.data);

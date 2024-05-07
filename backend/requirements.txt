@@ -1,11 +1,9 @@
 # sudo apt-get install gunicorn nginx
 flask
-flask-core
-flask-socketio
-# flask-classy
-dotenv
 ollama
 chromadb
 langchain
 langchain-community
 pytesseract
+flask-socketio
+waitress

@@ -1,0 +1,1 @@
+uvicorn main:app --reload --workers=3 --port=5000

@@ -1,0 +1,249 @@
+{
+  "chatModelProviders": {
+    "ollama": {
+      "openkh:latest": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "openkh:latest",
+          "temperature": 0.7
+        }
+      },
+      "llava:7b": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "llava:7b",
+          "temperature": 0.7
+        }
+      },
+      "nomic-embed-text:latest": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "nomic-embed-text:latest",
+          "temperature": 0.7
+        }
+      },
+      "phi3:latest": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "phi3:latest",
+          "temperature": 0.7
+        }
+      },
+      "seallm:latest": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "seallm:latest",
+          "temperature": 0.7
+        }
+      },
+      "sealor:latest": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "sealor:latest",
+          "temperature": 0.7
+        }
+      },
+      "sxdl:latest": {
+        "lc": 1,
+        "type": "constructor",
+        "id": ["langchain", "chat_models", "ollama", "ChatOllama"],
+        "kwargs": {
+          "base_url": "http://localhost:11434",
+          "model": "sxdl:latest",
+          "temperature": 0.7
+        }
+      }
+    },
+    "custom_openai": {}
+  },
+  "embeddingModelProviders": {
+    "ollama": {
+      "llava:7b": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "llava:7b",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      },
+      "nomic-embed-text:latest": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "nomic-embed-text:latest",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      },
+      "openkh:latest": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "openkh:latest",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      },
+      "phi3:latest": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "phi3:latest",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      },
+      "seallm:latest": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "seallm:latest",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      },
+      "sealor:latest": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "sealor:latest",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      },
+      "sxdl:latest": {
+        "caller": {
+          "maxConcurrency": 1,
+          "maxRetries": 6,
+          "queue": {
+            "_events": {},
+            "_eventsCount": 0,
+            "_intervalCount": 0,
+            "_intervalEnd": 0,
+            "_pendingCount": 0,
+            "_carryoverConcurrencyCount": false,
+            "_isIntervalIgnored": true,
+            "_intervalCap": null,
+            "_interval": 0,
+            "_queue": { "_queue": [] },
+            "_concurrency": 1,
+            "_throwOnTimeout": false,
+            "_isPaused": false
+          }
+        },
+        "model": "sxdl:latest",
+        "baseUrl": "http://localhost:11434",
+        "keepAlive": "5m"
+      }
+    }
+  }
+}

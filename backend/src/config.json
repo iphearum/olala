@@ -1,0 +1,28 @@
+{
+  "chatModelProviders": {
+    "ollama": [
+      "openkh:latest",
+      "llava:7b",
+      "nomic-embed-text:latest",
+      "phi3:latest",
+      "seallm:latest",
+      "sealor:latest",
+      "sxdl:latest"
+    ],
+    "custom_openai": []
+  },
+  "embeddingModelProviders": {
+    "ollama": [
+      "openkh:latest",
+      "llava:7b",
+      "nomic-embed-text:latest",
+      "phi3:latest",
+      "seallm:latest",
+      "sealor:latest",
+      "sxdl:latest"
+    ]
+  },
+  "openaiApiKey": "",
+  "ollamaApiUrl": "http://localhost:11434",
+  "groqApiKey": ""
+}

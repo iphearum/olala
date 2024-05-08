@@ -74,3 +74,22 @@ def handle_message(message):
 if __name__ == '__main__':
     socketio.run(app)
 ```
+
+sudo nano /etc/systemd/system/flaskapp.service
+systemctl daemon-reload
+systemctl restart flaskapp.service
+```sh
+[Unit]
+Description=Flask Application
+After=network.target
+
+[Service]
+User=linx
+WorkingDirectory=/home/linx/smis/codes/ollama/openkh/backend
+ExecStart=/home/linx/.chat/bin/gunicorn -w 4 -b 127.0.0.1:5000 app:app
+#ExecStart=/home/linx/.chat/bin/python3 -m app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```

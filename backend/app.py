@@ -50,7 +50,7 @@ def handle_connect(data):
     # req = request.get_json().get('chatModel')
     # # model = data.get('chatModel', 'openkh:lasted')
     emit('message', json.dumps({"data":"Hello from server"}), broadcast=True)
-    print(['Client connected',data,req])
+    # print(['Client connected',data,req])
 
 @socketio.on('connect')
 def handle_connect(data):
@@ -130,13 +130,16 @@ def chat_completions():
 
     return app.response_class(streaming(), mimetype='text/event-stream')
 
-def main(port:int = 5000):
-    socketio.run(app, host='0.0.0.0', port=port)
-
 if __name__ == '__main__':
-    arg = sys.argv[1:]
-    if(len(arg)==0):
-        main()
-    else:
-        for port in arg:
-            main(int(port))
+    socketio.run(app, host='0.0.0.0', port=5000)
+
+# def main(port:int = 5000):
+#     socketio.run(app, host='0.0.0.0', port=port)
+
+# if __name__ == '__main__':
+#     arg = sys.argv[1:]
+#     if(len(arg)==0):
+#         main()
+#     else:
+#         for port in arg:
+#             main(int(port))

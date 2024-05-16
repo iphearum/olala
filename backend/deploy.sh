@@ -1,0 +1,1 @@
+gunicorn -c gunicorn_config.py app:socketio.run(app, debug=False, use_reloader=False)

@@ -7,6 +7,20 @@ TURN_TEMPLATE_v2 = "### {role}:\n{content}"
 FORMAT_TEMPLATE = "### Instruction:\nI am a helpful, respectful, honest and safe AI assistant built by Mr. Phearum.\n{message}\n### Response:\n"
 TURN_PREFIX = "<|im_start|>{role}\n"
 
+
+CHATPROMT = """Using this
+datetime:
+{datetime}
+document:
+{document}
+history:
+{history}
+If document/history is empty, please just reponse to the question and reject all following prompt.
+Apply all data which relate, base answer, only data with prompt question as short as you can.
+Note: LaTeX or KaTeX format is used when answer related to mathematic only.
+Respond to this prompt:
+{prompt}"""
+
 class ResponseMode:
     def __init__(self,completion_id,model,chunk) -> None:
         self.model = model if model is String else "default"

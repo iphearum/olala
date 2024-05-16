@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask-SocketIO Task Manager</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <input type="text" id="task_input" placeholder="Enter task">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="task_list"></ul>
+    <script type="text/javascript">
+        var socket = io();
+
+        socket.on('task_added', function(data) {
+            var taskList = document.getElementById('task_list');
+            var newTask = document.createElement('li');
+            newTask.textContent = 'Added task: ' + data.task;
+            taskList.appendChild(newTask);
+        });
+
+        socket.on('task_result', function(data) {
+            var taskList = document.getElementById('task_list');
+            var resultItem = document.createElement('li');
+            resultItem.textContent = 'Result: ' + data.result;
+            taskList.appendChild(resultItem);
+        });
+
+        function addTask() {
+            var taskInput = document.getElementById('task_input');
+            var task = taskInput.value;
+            socket.emit('add_task', { task: task });
+            taskInput.value = '';
+        }
+    </script>
+</body>
+</html>

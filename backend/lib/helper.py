@@ -15,11 +15,12 @@ document:
 {document}
 history:
 {history}
-If document/history is empty, please just reponse to the question and reject all following prompt.
-Apply all data which relate, base answer, only data with prompt question as short as you can.
-Note: LaTeX or KaTeX format is used when answer related to mathematic only.
 Respond to this prompt:
 {prompt}"""
+
+# If document/history is empty, please just reponse to the question and reject all following prompt.
+# Apply all data which relate, base answer, only data with prompt question as short as you can.
+# Note: LaTeX or KaTeX format is used when answer related to mathematic only.
 
 class ResponseMode:
     def __init__(self,completion_id,model,chunk) -> None:

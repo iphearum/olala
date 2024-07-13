@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
-import Sidebar from '@/components/Sidebar';
+import Home from '@/components/home';
 import { Toaster } from 'sonner';
 
 const montserrat = Montserrat({
@@ -24,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="h-full" lang="en">
+    <html className={cn('h-full')} lang="en">
       <body className={cn('h-full', montserrat.className)}>
-        <Sidebar>{children}</Sidebar>
+        <Home>{children}</Home>
         <Toaster
           toastOptions={{
             unstyled: true,

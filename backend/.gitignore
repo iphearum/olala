@@ -6,5 +6,8 @@ slide-ai
 *.png
 *.jpg
 thread.py
-
+stats
+wetts
+balochi
+khmer-*
 __pycache__

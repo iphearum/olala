@@ -10,7 +10,7 @@ const Rewrite = ({
   return (
     <button
       onClick={() => rewrite(messageId)}
-      className="p-2 text-white/70 rounded-xl hover:bg-[#1c1c1c] transition duration-200 hover:text-white"
+      className="p-2 rounded-xl hover:bg-transparent/10 transition duration-200"
     >
       <RefreshCcw size={18} />
     </button>

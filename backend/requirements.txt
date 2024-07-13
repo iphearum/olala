@@ -15,3 +15,6 @@ pydantic==1.10.5
 llama-index==0.10.37
 llama-index-readers-web==0.1.14
 gunicorn==22.0.0
+markupsafe==2.1.5
+werkzeug==3.0.3
+translators==5.9.2

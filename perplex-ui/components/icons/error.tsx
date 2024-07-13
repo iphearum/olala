@@ -1,7 +1,7 @@
 'use client';
 
 import anime from 'animejs';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import Link from 'next/link';
 
 const useAnimationEffect = () => {
@@ -27,7 +27,7 @@ const useAnimationEffect = () => {
   }, []);
 };
 
-const PageError = () => {
+export const PageError = memo(() => {
   const SMIS_URL = process.env.NEXTAUTH_REDIS;
   useAnimationEffect();
   return (
@@ -1211,6 +1211,6 @@ const PageError = () => {
       </Link>
     </div>
   );
-};
+});
 
 export default PageError;

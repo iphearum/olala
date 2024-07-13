@@ -1,7 +1,9 @@
-import Error from '@/components/icons/error';
-
 const Page = () => {
-  return <Error />;
+  return (
+    <div className="text-white justify-center">
+      <h2>Page Discover</h2>
+    </div>
+  );
 };
 
 export default Page;

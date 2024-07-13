@@ -6,9 +6,21 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        'screen-nav': 'calc(100vh - 100px)',
+      },
+    },
   },
-  plugins: [require('@tailwindcss/typography')],
+  variants: {
+    extend: {
+      visibility: ['group-hover'],
+    },
+  },
+  plugins: [
+    require('@tailwindcss/typography')
+  ],
 };
 export default config;

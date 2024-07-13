@@ -62,7 +62,7 @@ const SearchImages = ({
             );
             setLoading(false);
           }}
-          className="border border-dashed border-[#1C1C1C] hover:bg-[#1c1c1c] active:scale-95 duration-200 transition px-4 py-2 flex flex-row items-center justify-between rounded-lg text-white text-sm w-full"
+          className="border border-dashed hover:bg-[var(--sidebar-surface-secondary)] active:scale-95 duration-200 transition px-4 py-2 flex flex-row items-center justify-between rounded-lg text-sm w-full"
         >
           <div className="flex flex-row items-center space-x-2">
             <ImagesIcon size={17} />
@@ -76,7 +76,7 @@ const SearchImages = ({
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="bg-[#1C1C1C] h-32 w-full rounded-lg animate-pulse aspect-video object-cover"
+              className="h-32 w-full rounded-lg animate-pulse aspect-video object-cover"
             />
           ))}
         </div>

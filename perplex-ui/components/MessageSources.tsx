@@ -22,23 +22,26 @@ const MessageSources = ({ sources }: { sources: Document[] }) => {
         <a
           className="bg-[#111111] hover:bg-[#1c1c1c] transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
           key={i}
-          href={source.metadata.url}
+          href={source.metadata.url ?? source}
           target="_blank"
         >
           <p className="text-white text-xs overflow-hidden whitespace-nowrap text-ellipsis">
-            {source.metadata.title}
+            {source.metadata.title ?? source}
           </p>
           <div className="flex flex-row items-center justify-between">
             <div className="flex flex-row items-center space-x-1">
               <img
-                src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url}`}
+                src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url ?? source}`}
                 width={16}
                 height={16}
                 alt="favicon"
                 className="rounded-lg h-4 w-4"
               />
               <p className="text-xs text-white/50 overflow-hidden whitespace-nowrap text-ellipsis">
-                {source.metadata.url.replace(/.+\/\/|www.|\..+/g, '')}
+                {(source.metadata.url ?? source).replace(
+                  /.+\/\/|www.|\..+/g,
+                  '',
+                )}
               </p>
             </div>
             <div className="flex flex-row items-center space-x-1 text-white/50 text-xs">
@@ -56,7 +59,7 @@ const MessageSources = ({ sources }: { sources: Document[] }) => {
           <div className="flex flex-row items-center space-x-1">
             {sources.slice(3, 6).map((source, i) => (
               <img
-                src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url}`}
+                src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url ?? source}`}
                 width={16}
                 height={16}
                 alt="favicon"
@@ -92,23 +95,23 @@ const MessageSources = ({ sources }: { sources: Document[] }) => {
                       <a
                         className="bg-[#111111] hover:bg-[#1c1c1c] border border-[#1c1c1c] transition duration-200 rounded-lg p-3 flex flex-col space-y-2 font-medium"
                         key={i}
-                        href={source.metadata.url}
+                        href={source.metadata.url ?? source}
                         target="_blank"
                       >
                         <p className="text-white text-xs overflow-hidden whitespace-nowrap text-ellipsis">
-                          {source.metadata.title}
+                          {source.metadata.title ?? source}
                         </p>
                         <div className="flex flex-row items-center justify-between">
                           <div className="flex flex-row items-center space-x-1">
                             <img
-                              src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url}`}
+                              src={`https://s2.googleusercontent.com/s2/favicons?domain_url=${source.metadata.url ?? source}`}
                               width={16}
                               height={16}
                               alt="favicon"
                               className="rounded-lg h-4 w-4"
                             />
                             <p className="text-xs text-white/50 overflow-hidden whitespace-nowrap text-ellipsis">
-                              {source.metadata.url.replace(
+                              {(source.metadata.url ?? source).replace(
                                 /.+\/\/|www.|\..+/g,
                                 '',
                               )}

@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useMemo, useState } from 'react';
 import { Document } from '@langchain/core/documents';
 import Navbar from './Navbar';
 import Chat from './Chat';
 import EmptyChat from './EmptyChat';
 import { toast } from 'sonner';
-import WebSocket, { Socket } from 'socket.io-client';
+import homeContext from '@/app/api/home/home.context';
+import { useSelectedLayoutSegments } from 'next/navigation';
+import { useStorage } from '@/hooks/useHook';
+import { genSocketId, uuid } from '@/lib/constants';
 
 export type Message = {
   id: string;
@@ -16,132 +19,42 @@ export type Message = {
   sources?: Document[];
 };
 
-const useSocket = (url: string) => {
-  const [ws, setWs] = useState<Socket | null>(null);
+const ChatWindow = memo((props: any) => {
+  const {
+    state: { socket, urlchatid , message, messages},
+    dispatch,
+  } = useContext(homeContext);
 
-  useEffect(() => {
-    if (!ws) {
-      const connectWs = async () => {
-        let chatModel = localStorage.getItem('chatModel');
-        let chatModelProvider = localStorage.getItem('chatModelProvider');
-        let embeddingModel = localStorage.getItem('embeddingModel');
-        let embeddingModelProvider = localStorage.getItem(
-          'embeddingModelProvider',
-        );
+  const segments = useSelectedLayoutSegments()
 
-        if (
-          !chatModel ||
-          !chatModelProvider ||
-          !embeddingModel ||
-          !embeddingModelProvider
-        ) {
-          const providers = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/models`,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          ).then(async (res) => await res.json());
 
-          console.log(['test', url, providers]);
-          const chatModelProviders = providers.chatModelProviders;
-          const embeddingModelProviders = providers.embeddingModelProviders;
-
-          if (
-            !chatModelProviders ||
-            Object.keys(chatModelProviders).length === 0
-          )
-            return console.error('No chat models available');
-
-          if (
-            !embeddingModelProviders ||
-            Object.keys(embeddingModelProviders).length === 0
-          )
-            return console.error('No embedding models available');
-
-          chatModelProvider = Object.keys(chatModelProviders)[0];
-          chatModel = Object.keys(chatModelProviders[chatModelProvider])[0];
-
-          embeddingModelProvider = Object.keys(embeddingModelProviders)[0];
-          embeddingModel = Object.keys(
-            embeddingModelProviders[embeddingModelProvider],
-          )[0];
-
-          localStorage.setItem('chatModel', chatModel!);
-          localStorage.setItem('chatModelProvider', chatModelProvider);
-          localStorage.setItem('embeddingModel', embeddingModel!);
-          localStorage.setItem(
-            'embeddingModelProvider',
-            embeddingModelProvider,
-          );
-        }
-
-        const wsURL = new URL(url);
-        const searchParams = new URLSearchParams({});
-
-        searchParams.append('chatModel', chatModel!);
-        searchParams.append('chatModelProvider', chatModelProvider);
-
-        if (chatModelProvider === 'custom_openai') {
-          searchParams.append(
-            'openAIApiKey',
-            localStorage.getItem('openAIApiKey')!,
-          );
-          searchParams.append(
-            'openAIBaseURL',
-            localStorage.getItem('openAIBaseURL')!,
-          );
-        }
-
-        searchParams.append('embeddingModel', embeddingModel!);
-        searchParams.append('embeddingModelProvider', embeddingModelProvider);
-
-        wsURL.search = searchParams.toString();
-        const ws = WebSocket(wsURL.toString());
-        ws.on('connect', () => {
-          // console.log('[DEBUG] open');
-          setWs(ws);
-        });
-
-        ws.on(`message-${ws.id}`, (e) => {
-          const parsedData = JSON.parse(e);
-          if (parsedData.type === 'error') {
-            toast.error(parsedData.data);
-            if (parsedData.key === 'INVALID_MODEL_SELECTED') {
-              localStorage.clear();
-            }
-          }
-        });
-      };
-
-      connectWs();
-    }
-
-    return () => {
-      ws?.close();
-      // console.log('[DEBUG] closed');
-    };
-  }, [ws, url]);
-
-  return ws;
-};
-
-const ChatWindow = () => {
-  const ws = useSocket(process.env.NEXT_PUBLIC_WS_URL!);
   const [chatHistory, setChatHistory] = useState<[string, string][]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [mess, setMessages] = useStorage('messages', []);
   const [loading, setLoading] = useState(false);
   const [messageAppeared, setMessageAppeared] = useState(false);
-  const [focusMode, setFocusMode] = useState('llmChat');
-  const [socketID, setSocketID] = useState('message');
+  const [focusMode, setFocusMode] = useStorage('focusMode', 'llmChat');
+  useEffect(()=>{
+    dispatch({
+      field: 'messages',
+      value: mess
+    })
+  },[mess])
 
-  const socID = `message-${ws?.id}`;
-  useEffect(() => {
-    setSocketID(socID);
-  }, [ws, socID]);
+  const sendMessage = (message: string) => {
+    // let uid = urlchatid.replaceAll('-', '')
+    // if (urlchatid == "") {
+    // }
+    dispatch({
+      field: 'loading',
+      value: true
+    })
+    dispatch({
+      field: 'messageAppeared',
+      value: true
+    })
+    let uid = genSocketId()
+    if (message == "") return;
 
-  const sendMessage = async (message: string) => {
     if (loading) return;
     setLoading(true);
     setMessageAppeared(false);
@@ -150,17 +63,17 @@ const ChatWindow = () => {
     let recievedMessage = '';
     let added = false;
 
-    ws?.send(
+    socket?.send(
       JSON.stringify({
         type: 'message',
         content: message,
-        socketId: ws?.id,
+        socketId: uid,
         focusMode: focusMode,
-        history: [...chatHistory, ['human', message]],
+        history: [...chatHistory],
       }),
     );
 
-    setMessages((prevMessages) => [
+    setMessages((prevMessages: any) => [
       ...prevMessages,
       {
         content: message,
@@ -169,6 +82,7 @@ const ChatWindow = () => {
         createdAt: new Date(),
       },
     ]);
+
 
     const messageHandler = (e: any) => {
       const data = JSON.parse(e);
@@ -183,7 +97,7 @@ const ChatWindow = () => {
       if (data.type === 'sources') {
         sources = data.data;
         if (!added) {
-          setMessages((prevMessages) => [
+          setMessages((prevMessages: any) => [
             ...prevMessages,
             {
               content: '',
@@ -200,7 +114,7 @@ const ChatWindow = () => {
 
       if (data.type === 'message') {
         if (!added) {
-          setMessages((prevMessages) => [
+          setMessages((prevMessages: any) => [
             ...prevMessages,
             {
               content: data.data,
@@ -213,8 +127,8 @@ const ChatWindow = () => {
           added = true;
         }
 
-        setMessages((prev) =>
-          prev.map((message) => {
+        setMessages((prev: any) =>
+          prev.map((message: any) => {
             if (message.id === data.messageId) {
               return { ...message, content: message.content + data.data };
             }
@@ -233,49 +147,53 @@ const ChatWindow = () => {
           ['human', message],
           ['assistant', recievedMessage],
         ]);
+        dispatch({
+          field: 'loading',
+          value: false
+        })
+        dispatch({
+          field: 'messageAppeared',
+          value: true
+        })
         // ws?.removeEventListener('message', messageHandler);
-        ws?.off(socketID, messageHandler);
+        socket?.off(`message-${uid}`, messageHandler);
         setLoading(false);
       }
     };
+    socket?.on(`message-${uid}`, messageHandler);
+  }
 
-    ws?.on(socketID, messageHandler);
+  useEffect(() => {
+    sendMessage(message)
     // ws?.addEventListener('message', messageHandler);
-  };
+  }, [message])
 
   const rewrite = (messageId: string) => {
-    const index = messages.findIndex((msg) => msg.id === messageId);
+    const index = messages.findIndex((msg: any) => msg.id === messageId);
 
     if (index === -1) return;
 
     const message = messages[index - 1];
 
-    setMessages((prev) => {
+    setMessages((prev: any) => {
       return [...prev.slice(0, messages.length > 2 ? index - 1 : 0)];
     });
     setChatHistory((prev) => {
       return [...prev.slice(0, messages.length > 2 ? index - 1 : 0)];
     });
-
-    sendMessage(message.content);
+    sendMessage(message.content)
   };
 
-  return ws ? (
-    <div>
+  return socket ? (
+    <div {...props}>
       {messages.length > 0 ? (
-        <>
+        <div className='overflow-y-auto h-screen no-scrollbar'>
           <Navbar messages={messages} />
-          <Chat
-            loading={loading}
-            messages={messages}
-            sendMessage={sendMessage}
-            messageAppeared={messageAppeared}
-            rewrite={rewrite}
-          />
-        </>
+          <div className='h-[50px]'></div>
+          <Chat rewrite={rewrite} />
+        </div>
       ) : (
         <EmptyChat
-          sendMessage={sendMessage}
           focusMode={focusMode}
           setFocusMode={setFocusMode}
         />
@@ -301,6 +219,6 @@ const ChatWindow = () => {
       </svg>
     </div>
   );
-};
+});
 
 export default ChatWindow;

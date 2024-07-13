@@ -1,4 +1,6 @@
-const MessageBoxLoading = () => {
+import { memo } from "react";
+
+const MessageBoxLoading = memo(() => {
   return (
     <div className="flex flex-col space-y-2 w-full lg:w-9/12 bg-[#111111] animate-pulse rounded-lg p-3">
       <div className="h-2 rounded-full w-full bg-[#1c1c1c]" />
@@ -6,6 +8,6 @@ const MessageBoxLoading = () => {
       <div className="h-2 rounded-full w-10/12 bg-[#1c1c1c]" />
     </div>
   );
-};
+});
 
 export default MessageBoxLoading;

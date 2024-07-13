@@ -1,0 +1,19 @@
+
+FROM ./functionary-7b-v1.Q5_K.gguf
+
+PARAMETER temperature 0.8
+# PARAMETER temperature 0.8
+
+TEMPLATE """{{ if .System }}<|system|>
+{{ .System }}<|end|>
+{{ end }}{{ if .Prompt }}<|user|>
+{{ .Prompt }}<|end|>
+{{ end }}<|assistant|>
+{{ .Response }}<|end|>
+"""
+
+PARAMETER stop <|user|>
+PARAMETER stop <|assistant|>
+PARAMETER stop <|system|>
+PARAMETER stop <|end|>
+PARAMETER stop <|endoftext|>

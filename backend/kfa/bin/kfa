@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+from pathlib import Path
+from argparse import ArgumentParser
+from kfa import align, create_session
+import re
+import librosa
+import json
+import chardet
+
+_RE_PUNCT = re.compile(r"[៕។?!]\s*$")
+
+def write_to_whisper_json(file, alignments):
+
+    segments = []
+    words = []
+    text = ""
+    full_text = ""
+    id = 0
+
+    for (
+        text_segment,
+        second_start,
+        second_end,
+        actual_second_start,
+        actual_second_end,
+        score,
+    ) in alignments:
+        text += text_segment
+        full_text += text_segment
+        words.append({"word": text_segment, "start": second_start, "end": second_end, "score": score})
+
+        if _RE_PUNCT.search(text_segment):
+            segments.append(
+                {
+                    "id": id,
+                    "text": text,
+                    "start": words[0]["start"],
+                    "end": words[-1]["end"],
+                    "words": words,
+                    "score": score
+                }
+            )
+            text = ""
+            words = []
+            id += 1
+
+    root = {"text": full_text, "segments": segments, "language": "Khmer"}
+    with open(file, "w") as outfile:
+        json.dump(root, outfile, ensure_ascii=False, indent=2)
+
+
+def write_to_jsonl(file, alignments):
+    with open(file, "w") as outfile:
+        for (
+            text_segment,
+            second_start,
+            second_end,
+            actual_second_start,
+            actual_second_end,
+            score
+        ) in alignments:
+            outfile.write(
+                json.dumps(
+                    {
+                        "audio_filepath": str(args.audio),
+                        "text": text_segment,
+                        "duration": second_end - second_start,
+                        "start": second_start,
+                        "end": second_end,
+                        "actual_start": actual_second_start,
+                        "actual_end": actual_second_end,
+                        "score": score,
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        "kfa",
+        description="Khmer Forced Aligner powered by Wav2Vec2CTC and Phonetisaurus",
+    )
+    parser.add_argument("-f", "--format", choices=["jsonl", "whisper"], default="jsonl")
+    parser.add_argument("-a", "--audio", type=Path, required=True, help="Audio file")
+    parser.add_argument("-t", "--text", type=Path, required=True, help="Text file")
+    parser.add_argument(
+        "-d", "--device", choices=["cuda", "cpu"], default="cpu", help="Specify device"
+    )
+    parser.add_argument(
+        "-o", "--output", type=Path, required=True, help="Output JSONL file"
+    )
+
+    parser.add_argument(
+        "-q",
+        "--quiet",
+        required=False,
+        default=False,
+        help="Suppress progress information",
+    )
+
+    args = parser.parse_args()
+    y, sr = librosa.load(args.audio, sr=16000, mono=True)
+    with open(args.text, "rb") as infile:
+        textbytes = infile.read()
+        detection = chardet.detect(textbytes)
+        text = textbytes.decode(detection["encoding"])
+
+    providers = (
+        ["CUDAExecutionProvider", "CPUExecutionProvider"]
+        if args.device == "cuda"
+        else ["CPUExecutionProvider"]
+    )
+    
+    session = create_session(providers=providers)
+    alignments = list(align(y, sr, text, session=session, silent=args.quiet))
+    
+    if args.format == "jsonl":
+        write_to_jsonl(args.output, alignments)
+
+    if args.format == "whisper":
+        write_to_whisper_json(args.output, alignments)

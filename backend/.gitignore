@@ -1,10 +1,10 @@
 .chat
 .env
 slide-ai
-*.pdf
-*.ipynb
-*.png
-*.jpg
+# *.pdf
+# *.ipynb
+# *.png
+# *.jpg
 thread.py
 stats
 wetts

@@ -1,0 +1,12 @@
+[Unit]
+Description=Chatbot Application
+After=network.target
+
+[Service]
+User=linx
+WorkingDirectory=/var/www/html/chatbot
+ExecStart=/bin/bash -c "pm2 delete chatbot --force && pm2 start --name chatbot pnpm -- start"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

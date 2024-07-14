@@ -1,0 +1,21 @@
+.katex {
+  color: #0a91b3;
+  font-size: 1.2rem;
+  line-height: 1.7rem;
+  padding: 0px 3px 0px 0px;
+}
+
+.prose code {
+  background-color: rgba(112, 112, 112, 0.2);
+  color: rgba(255, 88, 82, 0.6);
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+.prose pre {
+  background-color: transparent;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
+}

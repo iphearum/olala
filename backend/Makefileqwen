@@ -1,6 +1,5 @@
 
-FROM phi3
-# :3.8b-mini-128k-instruct-q8_0
+FROM phi3:3.8b-mini-128k-instruct-q8_0
 
 PARAMETER temperature 0.8
 

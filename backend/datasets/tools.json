@@ -1,0 +1,239 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_weather",
+            "description": "Get the current weather",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "The city and state, e.g. San Francisco, CA"
+                    }
+                },
+                "required": ["location"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "add_alarm",
+            "description": "Add an alarm to the active timers. Displayed as an alarm for the given time.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "time": {
+                        "type": "string",
+                        "description": "The exact time when the timer should go off, in the format 'YYYY-MM-DD HH:MM:SS'."
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Optional title of the timer."
+                    }
+                },
+                "required": ["time"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "add_countdown",
+            "description": "Add a countdown timer to the active timers. Displayed as counting down to zero.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "duration": {
+                        "type": "string",
+                        "description": "A duration in ISO 8601 format."
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Optional title of the timer."
+                    }
+                },
+                "required": ["duration"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "delete_timer",
+            "description": "Cancel one of the active timers",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": ["id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "evaluate_expression",
+            "description": "Evaluate a mathematical expression in the mathjs syntax",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "expression": {
+                        "type": "string"
+                    }
+                },
+                "required": ["expression"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_weather",
+            "description": "Get the current weather in a given location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "latitude": {
+                        "type": "number"
+                    },
+                    "longitude": {
+                        "type": "number"
+                    }
+                },
+                "required": ["latitude", "longitude"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather_forecast",
+            "description": "Get the weather forecast for 5 days with data every 3 hours in a given location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "latitude": {
+                        "type": "number"
+                    },
+                    "longitude": {
+                        "type": "number"
+                    }
+                },
+                "required": ["latitude", "longitude"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_places_info",
+            "description": "Get information about nearby places using the Google Places API",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "latitude": {
+                        "type": "number"
+                    },
+                    "longitude": {
+                        "type": "number"
+                    },
+                    "radius": {
+                        "type": "number",
+                        "description": "The radius in meters around the given location"
+                    },
+                    "query": {
+                        "type": "string",
+                        "description": "A text query like the name of a nearby place"
+                    },
+                    "fields": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "A list of fields to retrieve for each place. Available fields are 'formattedAddress', 'regularOpeningHours', 'currentOpeningHours', 'types', 'rating' and 'websiteUri'"
+                    },
+                    "maxResults": {
+                        "type": "number"
+                    }
+                },
+                "required": ["latitude", "longitude", "query", "fields"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "play_on_spotify",
+            "description": "Start playing tracks, an album, artist or a playlist on Spotify. Calling this function replaces the current playlist!",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "trackIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Optional. An array of track IDs"
+                    },
+                    "contextUri": {
+                        "type": "string",
+                        "description": "Optional. The Spotify URI of an album, artist, or playlist."
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_artists_and_play_top_songs_on_spotify",
+            "description": "Searches for 'queries' on Spotify and plays top songs of the found artist(s). Calling this function replaces the current playlist! Pass multiple artists to one tool invocation to play a mix of top songs from different artists.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "queries": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "One or more queries to find artists by."
+                    }
+                },
+                "required": ["queries"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_on_spotify",
+            "description": "Find tracks, artists, albums or playlists on Spotify",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string"
+                    },
+                    "types": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Types to search across. Valid types are: 'track', 'artist', 'album', 'playlist', 'show', and 'episode'."
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "The maximum number of items to return"
+                    }
+                },
+                "required": ["query", "types"]
+            }
+        }
+    }
+]
